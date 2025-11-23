@@ -8,14 +8,14 @@ export const authenticate = async (req, res, next) => {
 const { accessToken } = req.cookies;
 
 if(!accessToken) {
-  throw createHttpError(401, "Access token missing");
+  throw createHttpError(401, "Missing access token");
 }
 
 const session = await Session.findOne({
   accessToken
 });
 if(!session) {
-  throw createHttpError(401, "Session mnot found");
+  throw createHttpError(401, "Session not found");
 }
 
 const isAccessTokenExpired = new Date() > new Date(session.accessTokenValidUntil);

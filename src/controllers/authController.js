@@ -41,7 +41,7 @@ if (!user) {
 
 const isValidPassword = await bcrypt.compare(password, user.password);
 if (!isValidPassword) {
-  throw createHttpError(401, "Invalid email or password");
+  throw createHttpError(401, "Invalid credentials");
 }
 
 await Session.deleteOne({ userId: user._id });
@@ -79,7 +79,7 @@ export const refreshUserSession = async (req, res) => {
 
 
   const isRefreshTokenValid = new Date() > new Date(session.refreshTokenValidUntil);
-  if (isRefreshTokenValid) {
+  if (!isRefreshTokenValid) {
     throw createHttpError(401, "Session token expired");
   }
 

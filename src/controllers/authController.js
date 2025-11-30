@@ -6,10 +6,10 @@ import bcrypt from 'bcrypt';
 import { Session } from '../models/session.js';
 import { createSession, setSessionCookies } from '../services/auth.js';
 import jwt from 'jsonwebtoken';
-import { sendEmail } from '../utils/sendEmail.js';
 import handlebars from 'handlebars';
 import path from 'node:path';
 import fs from 'node:fs/promises';
+import { sendMmail } from '../utils/sendMail.js';
 
 
 export const registerUser = async (req, res) => {
@@ -127,7 +127,7 @@ const html = template({
 
 
 try {
-  await sendEmail({
+  await sendMmail({
     from: process.env.SMTP_FROM,
     to: email,
     subject: "Password Reset Email",

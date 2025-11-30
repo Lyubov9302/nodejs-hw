@@ -1,4 +1,4 @@
-// src/utils/sendEmail.js
+
 
 import nodemailer from 'nodemailer';
 
@@ -15,6 +15,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendEmail = async (options) => {
+export const sendMmail = async (options) => {
   return await transporter.sendMail(options);
 };

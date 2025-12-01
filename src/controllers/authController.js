@@ -9,7 +9,7 @@ import jwt from 'jsonwebtoken';
 import handlebars from 'handlebars';
 import path from 'node:path';
 import fs from 'node:fs/promises';
-import { sendMmail } from '../utils/sendMail.js';
+import { sendMail } from '../utils/sendMail.js';
 
 
 export const registerUser = async (req, res) => {
@@ -105,9 +105,10 @@ export const requestResetEmail = async (req, res) => {
 
   // anti user enumeration
   if(!user) {
-    return res.status(200).json({
+      res.status(200).json({
       message: 'Password reset email sent successfully'
     });
+    return;
   }
 
   const resetToken = jwt.sign(
@@ -121,13 +122,13 @@ const templateSource = await fs.readFile(templatePath, 'utf-8');
 const template = handlebars.compile(templateSource);
 const html = template({
   name: user.username,
-  link: `${process.env.FRONTEND_DOMAIN}/reser-password?token=${resetToken}`,
+  link: `${process.env.FRONTEND_DOMAIN}/reset-password?token=${resetToken}`,
 });
 
 
 
 try {
-  await sendMmail({
+  await sendMail({
     from: process.env.SMTP_FROM,
     to: email,
     subject: "Password Reset Email",
@@ -137,13 +138,7 @@ try {
   throw createHttpError(500, 'Failed to send email, please try again later');
 }
 
-	res.status(200).json({
-		message: 'Password reset email sent successfully'
-	});
-
-
-
-    return res.status(200).json({
+      res.status(200).json({
       message: 'Password reset email sent successfully'
     });
   };

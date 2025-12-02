@@ -9,7 +9,7 @@ import jwt from 'jsonwebtoken';
 import handlebars from 'handlebars';
 import path from 'node:path';
 import fs from 'node:fs/promises';
-import { sendMail } from '../utils/sendMail.js';
+import { sendEmail } from '../utils/sendMail.js';
 
 
 export const registerUser = async (req, res) => {
@@ -128,7 +128,7 @@ const html = template({
 
 
 try {
-  await sendMail({
+  await sendEmail({
     from: process.env.SMTP_FROM,
     to: email,
     subject: "Password Reset Email",
